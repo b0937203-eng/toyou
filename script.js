@@ -61,16 +61,25 @@ runner.addEventListener("pointerenter", dodge);  // mouse comes near
 runner.addEventListener("pointerdown", dodge);   // finger touches
 
 /* ---------- Yes clicked ---------- */
-yes.addEventListener("click", () => {
+yes.addEventListener("click", (e) => {
+  // Don't allow Yes to be clicked while it is running away
+  if (
+    RUNAWAY === "yes" &&
+    startTime !== null &&
+    Date.now() - startTime < DODGE_SECONDS * 1000
+  ) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    dodge(e);
+    return;
+  }
+
   document.body.classList.add("won");
   runner.classList.remove("run");
-  for (let i = 0; i < 40; i++) {
-    setTimeout(makeBubble, i * 60);   // burst of bubbles
-  }
-});
 
-no.addEventListener("click", () => {
-  line.textContent = "Wrong button! Try the other one 😏";
+  for (let i = 0; i < 40; i++) {
+    setTimeout(makeBubble, i * 60);
+  }
 });
 
 /* ---------- Heart bubbles ---------- */
