@@ -76,8 +76,11 @@ button {
 #no  { background: var(--white); color: var(--blue-dark); }
 
 /* The JS adds this class to Yes when it starts running away */
-#yes.run { position: fixed; z-index: 5; transition: left .25s ease, top .25s ease; }
-
+#yes.run {
+  position: fixed;
+  z-index: 5;
+  transition: left 0.04s linear, top 0.04s linear;
+}
 button:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
 
 /* ---------- "Yes" screen ---------- */
