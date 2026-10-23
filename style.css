@@ -1,0 +1,123 @@
+/* ---------- Colors: change these to change the whole theme ---------- */
+:root {
+  --bg1: #5797db;        /* page background, light */
+  --bg2: #98abbf;        /* page background, deeper blue */
+  --ink: #12376b;        /* text */
+  --blue: #2f80ed;       /* main blue (Yes button, border) */
+  --blue-dark: #1b5cc4;  /* darker blue (No button text) */
+  --white: #ffffff;
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; margin: 0; }
+
+body {
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255,255,255,.7), transparent 35%),
+    radial-gradient(circle at 85% 80%, rgba(47,128,237,.25), transparent 40%),
+    linear-gradient(160deg, var(--bg1), var(--bg2));
+  color: var(--ink);
+  font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+  overflow: hidden;
+  
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 24 24'><path fill='%232f80ed' stroke='white' stroke-width='1' d='M12 21s-7-4.6-9.3-9C1 8.6 2.8 5 6.2 5c2 0 3.5 1.1 5.8 3.2C14.3 6.1 15.800 5 17.800 5 21.200 5 23 8.600 21.300 12 19 16.400 12 21 12 21z'/></svg>") 16 16, auto;
+}
+
+/* ---------- Card ---------- */
+main {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 34rem;
+  text-align: center;
+  background: rgba(255, 255, 255, .8);
+  border: 1px solid var(--white);
+  border-radius: 28px;
+  padding: 2.5rem 1.5rem 3rem;
+  box-shadow: 0 14px 50px rgba(27, 92, 196, .3), inset 0 0 40px rgba(255,255,255,.6);
+}
+
+h1 {
+  font-family: "Dancing Script", "Brush Script MT", cursive;
+  font-size: clamp(2.8rem, 10vw, 4.5rem);
+  margin: 0 0 .25rem;
+  line-height: 1.1;
+}
+
+.sub { margin: 0 0 2rem; font-size: 1.1rem; min-height: 1.6em; }
+
+.beat { font-size: 2.6rem; margin-bottom: .5rem; animation: beat 1.4s ease-in-out infinite; }
+@keyframes beat {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.2); }
+  30% { transform: scale(1); }
+  45% { transform: scale(1.15); }
+}
+
+/* ---------- Buttons ---------- */
+.options { display: flex; gap: 1.25rem; justify-content: center; min-height: 4rem; }
+
+button {
+  font: inherit;
+  font-size: 1.3rem;
+  font-weight: 700;
+  padding: .9rem 2.2rem;
+  border-radius: 999px;
+  border: 2px solid var(--blue);
+  cursor: inherit;
+  touch-action: manipulation;
+}
+
+#yes { background: var(--blue); color: var(--white); box-shadow: 0 6px 16px rgba(47,128,237,.45); }
+#no  { background: var(--white); color: var(--blue-dark); }
+
+/* The JS adds this class to Yes when it starts running away */
+#yes.run { position: fixed; z-index: 5; transition: left .25s ease, top .25s ease; }
+
+button:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+/* ---------- "Yes" screen ---------- */
+#done { display: none; }
+body.won #ask { display: none; }
+body.won #done { display: block; }
+#done h1 { font-size: clamp(2.4rem, 9vw, 4rem); }
+
+/* ---------- Heart bubbles ---------- */
+.bubble {
+  position: fixed;
+  bottom: -5rem;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .55);
+  border: 1px solid rgba(255, 255, 255, .9);
+  box-shadow: inset 0 0 10px rgba(255,255,255,.8), 0 4px 12px rgba(47,128,237,.2);
+  pointer-events: none;
+  animation: rise linear forwards;
+}
+@keyframes rise {
+  to { transform: translateY(-120vh) translateX(var(--drift, 0px)); opacity: 0; }
+}
+
+/* Little heart under a finger on phones */
+.tap {
+  position: fixed;
+  z-index: 9;
+  pointer-events: none;
+  font-size: 1.6rem;
+  transform: translate(-50%, -50%);
+  animation: tapfade .8s ease-out forwards;
+}
+@keyframes tapfade {
+  to { transform: translate(-50%, -150%) scale(1.5); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .beat, .bubble { animation: none; }
+  #yes.run { transition: none; }
+}
